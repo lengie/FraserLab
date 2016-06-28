@@ -21,8 +21,7 @@ getData <- function (df){
   medsig <- median(df$AvgSig)
   print(paste("Mean signal is",avg,"& median is",medsig,
               " while mean n is",m,"and median is",med))
-  dfname <- comment(df)
-  print(num)
+  dfname <- deparse(substitute(df)) #this returns NULL right now
   num[i,] <- c(dfname,m,med)
   return(num)
 }
