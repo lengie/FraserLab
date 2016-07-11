@@ -1,3 +1,4 @@
+#each has avg signal, n, T, t_trip, t_diff, filename (includes page number), cpp. No duration. 
 DAC <- read.table("DMSO_antCanal.txt",skip=1)
 DACr <- read.table("DMSO_antCrist.txt",skip=1)
 DAM <- read.table("DMSO_antMac.txt",skip=1)
@@ -19,9 +20,9 @@ getData <- function (df){
   med <- median(df$n)
   avg <- mean(df$AvgSig)
   medsig <- median(df$AvgSig)
-  print(paste("Mean signal is",avg,"& median is",medsig,
-              " while mean n is",m,"and median is",med))
   dfname <- deparse(substitute(df)) #this returns NULL right now
+  print(paste("Mean signal of",dfname,"is",avg,"& median is",medsig,
+              " while mean n is",m,"and median is",med))
   num[i,] <- c(dfname,m,med)
   return(num)
 }
@@ -29,6 +30,8 @@ getData <- function (df){
 categories <- list(DAC=DAC,DACr=DACr,DAM=DAM,DDR=DDR,DPC=DPC,TAC=TAC,TAM=TAM,
                    TDR=TDR,TPC=TPC)
 num <- lapply(categories,getData)
+#I want a single dataframe with this info
+#I am getting a list of dataframes, one per data set
 
 qplot(num$Mean,num$Median)
 
