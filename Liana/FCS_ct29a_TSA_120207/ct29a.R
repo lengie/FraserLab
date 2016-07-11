@@ -13,14 +13,15 @@ num <- data.frame(Name=character(),Mean=double(),Median=double(),stringsAsFactor
 i <- 0
 
 getData <- function (df){
-  df <- plyr::rename(df,c("V1"="AvgSig","V2"="n","V3"="T","V4"="ttrip","V5"="tdiff",
-                          "V6"="Exp","V7"="Page","V8"="cpp"))
+  #print(deparse(substitute(df)))
+  #df <- plyr::rename(df,c("V1"="AvgSig","V2"="n","V3"="T","V4"="ttrip","V5"="tdiff",
+  #                        "V6"="Exp","V7"="Page","V8"="cpp"))
   i <- i+1
-  m <- mean(df$n)
-  med <- median(df$n)
-  avg <- mean(df$AvgSig)
-  medsig <- median(df$AvgSig)
-  dfname <- deparse(substitute(df)) #this returns NULL right now
+  m <- mean(df$V2)
+  med <- median(df$V2)
+  avg <- mean(df$V1)
+  medsig <- median(df$V1)
+  dfname <- deparse(substitute(df))
   print(paste("Mean signal of",dfname,"is",avg,"& median is",medsig,
               " while mean n is",m,"and median is",med))
   num[i,] <- c(dfname,m,med)
@@ -32,6 +33,8 @@ categories <- list(DAC=DAC,DACr=DACr,DAM=DAM,DDR=DDR,DPC=DPC,TAC=TAC,TAM=TAM,
 num <- lapply(categories,getData)
 #I want a single dataframe with this info
 #I am getting a list of dataframes, one per data set
+
+#getData(DAC)
 
 qplot(num$Mean,num$Median)
 
