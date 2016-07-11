@@ -1,4 +1,5 @@
 #each has avg signal, n, T, t_trip, t_diff, filename (includes page number), cpp. No duration. 
+#Maybe separate into another folder and have a loop open and read all of the files?
 DAC <- read.table("DMSO_antCanal.txt",skip=1)
 DACr <- read.table("DMSO_antCrist.txt",skip=1)
 DAM <- read.table("DMSO_antMac.txt",skip=1)
@@ -36,13 +37,16 @@ categories <- list(DAC=DAC,DACr=DACr,DAM=DAM,DDR=DDR,DPC=DPC,TAC=TAC,TAM=TAM,
 #Could add to num with a loop instead of lapply, but it'd take longer
 #Does that matter at this point?
 #How much time should I spend on elegance and efficiency rather than brute-forcing it
+catnames <- names(categories)
 
 for(j in categories) {
   i <- i+1
   #dfname <- deparse(substitute(j))
-  dfname <- names(categories)[i] #if categories is large this is a pain
+  dfname <- catnames[i]
   num[i,] <- c(dfname,getData(j))
 }
 
-qplot(num$Mean,num$Median)
-
+ggplot(data=num,aes(x=Mean,y=Median))+geom_point()+
+  theme(axis.text.x=element_text(angle=50,hjust=1))+
+  geom_text(aes(label=Name),hjust=0, vjust=0)
+#might be good to color code the corresponding points
