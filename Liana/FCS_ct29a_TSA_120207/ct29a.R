@@ -13,10 +13,8 @@ num <- data.frame(Name=character(),Mean=double(),Median=double(),stringsAsFactor
 i <- 0
 
 getData <- function (df){
-  #print(deparse(substitute(df)))
   #df <- plyr::rename(df,c("V1"="AvgSig","V2"="n","V3"="T","V4"="ttrip","V5"="tdiff",
   #                        "V6"="Exp","V7"="Page","V8"="cpp"))
-  i <- i+1
   m <- mean(df$V2)
   med <- median(df$V2)
   avg <- mean(df$V1)
@@ -24,17 +22,26 @@ getData <- function (df){
   dfname <- deparse(substitute(df))
   print(paste("Mean signal of",dfname,"is",avg,"& median is",medsig,
               " while mean n is",m,"and median is",med))
-  num[i,] <- c(dfname,m,med)
-  return(num)
+  #num[i,] <- c(m,med)
+  return(c(m,med))
 }
 
 categories <- list(DAC=DAC,DACr=DACr,DAM=DAM,DDR=DDR,DPC=DPC,TAC=TAC,TAM=TAM,
                    TDR=TDR,TPC=TPC)
-num <- lapply(categories,getData)
+#num <- lapply(categories,getData)
 #I want a single dataframe with this info
 #I am getting a list of dataframes, one per data set
 
-#getData(DAC)
+for(j in categories) {
+  i <- i+1
+  dfname <- deparse(substitute(j))
+  num[i,] <- c(dfname,getData(j))
+}
+
+  #num <- sapply(list(DAC=DAC,DACr=DACr),getData)
+#Could add to num with a loop instead of lapply, but it'd take longer
+#Does that matter at this point?
+#How much time should I spend on elegance and efficiency rather than brute-forcing it
 
 qplot(num$Mean,num$Median)
 
