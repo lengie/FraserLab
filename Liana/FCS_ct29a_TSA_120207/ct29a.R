@@ -19,7 +19,7 @@ getData <- function (df){
   med <- median(df$V2)
   avg <- mean(df$V1)
   medsig <- median(df$V1)
-  dfname <- deparse(substitute(df))
+  #dfname <- deparse(substitute(df))
   print(paste("Mean signal of",dfname,"is",avg,"& median is",medsig,
               " while mean n is",m,"and median is",med))
   #num[i,] <- c(m,med)
@@ -32,16 +32,17 @@ categories <- list(DAC=DAC,DACr=DACr,DAM=DAM,DDR=DDR,DPC=DPC,TAC=TAC,TAM=TAM,
 #I want a single dataframe with this info
 #I am getting a list of dataframes, one per data set
 
-for(j in categories) {
-  i <- i+1
-  dfname <- deparse(substitute(j))
-  num[i,] <- c(dfname,getData(j))
-}
-
-  #num <- sapply(list(DAC=DAC,DACr=DACr),getData)
+#num <- sapply(list(DAC=DAC,DACr=DACr),getData)
 #Could add to num with a loop instead of lapply, but it'd take longer
 #Does that matter at this point?
 #How much time should I spend on elegance and efficiency rather than brute-forcing it
+
+for(j in categories) {
+  i <- i+1
+  #dfname <- deparse(substitute(j))
+  dfname <- names(categories)[i] #if categories is large this is a pain
+  num[i,] <- c(dfname,getData(j))
+}
 
 qplot(num$Mean,num$Median)
 
