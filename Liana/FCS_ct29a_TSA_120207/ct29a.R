@@ -75,8 +75,10 @@ ggplot(data=num,aes(x=Mean,y=Median))+geom_point()+
   geom_text(aes(label=Name),hjust=0, vjust=0)
 #might be good to color code the corresponding points
 
-#Median only plot? DMSO vs TSA? Averages
-ggplot(data=num,aes(x=Mean,y=Median))+geom_boxplot()+
+xyplot(Median|exp,data=num,layout=c(2,1))
+
+ggplot(data=num,aes(x=exp,y=Median),xlab="Experiment",ylab="Median N")+geom_point()+
   theme(axis.text.x=element_text(angle=50,hjust=1))+
-  geom_text(aes(label=Name),hjust=0, vjust=0)
-#might be good to color code the corresponding points
+  geom_text_repel(aes(label=Name), box.padding = unit(0.45, "lines"))
+  #geom_text(aes(label=Name),hjust=0, vjust=0,size=2)
+#maybe just label them or color them by hand
