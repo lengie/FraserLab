@@ -4,8 +4,10 @@ DAC <- read.table("DMSO_antCanal.txt",skip=1)
 DACr <- read.table("DMSO_antCrist.txt",skip=1)
 DAM <- read.table("DMSO_antMac.txt",skip=1)
 DDR <- read.table("DMSO_dorsalRoof.txt",skip=1)
-DPC <- read.table("DMSO_postCanalpostCrist.txt",skip=1)
-TAC <- read.table("TSA_antCanalantCrist.txt",skip=1)
+DPC <- read.table("DMSO_postCanal.txt",skip=1)
+DPCr <- read.table("DMSO_postCrist.txt",skip=1)
+TAC <- read.table("TSA_antCanal.txt",skip=1)
+TACr <- read.table("TSA_antCrist.txt",skip=1)
 TAM <- read.table("TSA_antMac.txt",skip=1)
 TDR <- read.table("TSA_dorsalRoof.txt",skip=1)
 TPC <- read.table("TSA_postCrist.txt",skip=1)
@@ -14,8 +16,10 @@ DACL <- read.table("DMSO_antCanal_Le.txt",skip=1)
 DACrL <- read.table("DMSO_antCrist_Le.txt",skip=1)
 DAML <- read.table("DMSO_antMac_Le.txt",skip=1)
 DDRL <- read.table("DMSO_dorsalRoof_Le.txt",skip=1)
-DPCL <- read.table("DMSO_postCanalpostCrist_Le.txt",skip=1)
-TACL <- read.table("TSA_antCanalantCrist_Le.txt",skip=1)
+DPCL <- read.table("DMSO_postCanal_Le.txt",skip=1)
+DPCrL <- read.table("DMSO_postCrist_Le.txt",skip=1)
+TACL <- read.table("TSA_antCanal_Le.txt",skip=1)
+TACrL <- read.table("TSA_antCrist_Le.txt",skip=1)
 TAML <- read.table("TSA_antMac_Le.txt",skip=1)
 TDRL <- read.table("TSA_dorsalRoof_Le.txt",skip=1)
 TPCL <- read.table("TSA_postCrist_Le.txt",skip=1)
@@ -38,9 +42,9 @@ getData <- function (df){
   return(c(m,med))
 }
 
-categories <- list(DAC=DAC,DACr=DACr,DAM=DAM,DDR=DDR,DPC=DPC,TAC=TAC,TAM=TAM,
+categories <- list(DAC=DAC,DACr=DACr,DAM=DAM,DDR=DDR,DPC=DPC,DPCr=DPCr,TAC=TAC,TACr=TACr,TAM=TAM,
                    TDR=TDR,TPC=TPC,DACL=DACL,DACrL=DACrL,DAML=DAML,DDRL=DDRL,
-                   DPCL=DPCL,TACL=TACL,TAML=TAML,TDRL=TDRL,TPCL=TPCL)
+                   DPCL=DPCL,DPCrL=DPCrL,TACL=TACL,TACrL=TACrL,TAML=TAML,TDRL=TDRL,TPCL=TPCL)
 #num <- lapply(categories,getData)
 #I want a single dataframe with this info
 #I am getting a list of dataframes, one per data set
@@ -54,9 +58,17 @@ catnames <- names(categories)
 for(j in categories) {
   i <- i+1
   #dfname <- deparse(substitute(j))
-  dfname <- catnames[i]
-  num[i,] <- c(dfname,getData(j))
+  num[i,1] <- catnames[i]
+  num[i,2:3] <- getData(j) 
 }
+
+num$factors <- c("antCanal","antCrist","antMac","dorsalRoof","postCanal","postCrist",
+             "antCanal","antCrist","antMac","dorsalRoof","postCrist",
+            "antCanal_Le","antCrist_Le","antMac_Le","dorsalRoof_Le","postCanal_Le","postCrist_Le",
+            "antCanal_Le","antCrist_Le","antMac_Le","dorsalRoof_Le","postCrist_Le")
+
+num$exp <- rep(c("DMSO","TSA","DMSO","TSA"),c(6,5,6,5))
+
 
 ggplot(data=num,aes(x=Mean,y=Median))+geom_point()+
   theme(axis.text.x=element_text(angle=50,hjust=1))+
