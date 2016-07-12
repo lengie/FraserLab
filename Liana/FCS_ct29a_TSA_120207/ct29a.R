@@ -10,6 +10,17 @@ TAM <- read.table("TSA_antMac.txt",skip=1)
 TDR <- read.table("TSA_dorsalRoof.txt",skip=1)
 TPC <- read.table("TSA_postCrist.txt",skip=1)
 
+DACL <- read.table("DMSO_antCanal_Le.txt",skip=1)
+DACrL <- read.table("DMSO_antCrist_Le.txt",skip=1)
+DAML <- read.table("DMSO_antMac_Le.txt",skip=1)
+DDRL <- read.table("DMSO_dorsalRoof_Le.txt",skip=1)
+DPCL <- read.table("DMSO_postCanalpostCrist_Le.txt",skip=1)
+TACL <- read.table("TSA_antCanalantCrist_Le.txt",skip=1)
+TAML <- read.table("TSA_antMac_Le.txt",skip=1)
+TDRL <- read.table("TSA_dorsalRoof_Le.txt",skip=1)
+TPCL <- read.table("TSA_postCrist_Le.txt",skip=1)
+
+
 num <- data.frame(Name=character(),Mean=double(),Median=double(),stringsAsFactors=FALSE)
 i <- 0
 
@@ -28,7 +39,8 @@ getData <- function (df){
 }
 
 categories <- list(DAC=DAC,DACr=DACr,DAM=DAM,DDR=DDR,DPC=DPC,TAC=TAC,TAM=TAM,
-                   TDR=TDR,TPC=TPC)
+                   TDR=TDR,TPC=TPC,DACL=DACL,DACrL=DACrL,DAML=DAML,DDRL=DDRL,
+                   DPCL=DPCL,TACL=TACL,TAML=TAML,TDRL=TDRL,TPCL=TPCL)
 #num <- lapply(categories,getData)
 #I want a single dataframe with this info
 #I am getting a list of dataframes, one per data set
@@ -47,6 +59,12 @@ for(j in categories) {
 }
 
 ggplot(data=num,aes(x=Mean,y=Median))+geom_point()+
+  theme(axis.text.x=element_text(angle=50,hjust=1))+
+  geom_text(aes(label=Name),hjust=0, vjust=0)
+#might be good to color code the corresponding points
+
+#Median only plot? DMSO vs TSA? Averages
+ggplot(data=num,aes(x=Mean,y=Median))+geom_boxplot()+
   theme(axis.text.x=element_text(angle=50,hjust=1))+
   geom_text(aes(label=Name),hjust=0, vjust=0)
 #might be good to color code the corresponding points
